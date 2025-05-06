@@ -2,28 +2,28 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 type PositionProps = [number, number];
+
 function useGeolocation() {
   const [position, setPosition] = useState<PositionProps | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  function getPosition() {
-    if (!navigator.geolocation)
-      return setError("Your browser does not support geolocation");
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setError("Your browser does not support geolocation");
+      return;
+    }
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setPosition([pos.coords.latitude, pos.coords.longitude]);
-        console.log(pos.coords);
       },
       (error) => {
         setError(error.message);
       }
     );
-  }
-  useEffect(() => {
-    getPosition();
   }, []);
-  return { position, error, getPosition };
+
+  return { position, error };
 }
 
 function Map() {
