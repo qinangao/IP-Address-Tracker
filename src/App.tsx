@@ -1,11 +1,14 @@
 import Header from "./components/Header";
-import Map from "./components/Map";
+import Tracker from "./components/Tracker";
+import { LocationProvider } from "./contexts/locationContext";
 
 function App() {
   return (
     <div className="h-screen w-screen">
-      <Header />
-      <Map />
+      <LocationProvider>
+        <Header />
+        <Tracker />
+      </LocationProvider>
     </div>
   );
 }
