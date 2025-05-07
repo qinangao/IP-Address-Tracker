@@ -1,4 +1,4 @@
-function Input() {
+function Search() {
   return (
     <div>
       <div className="flex justify-center items-center pt-[10px]">
@@ -15,4 +15,4 @@ function Input() {
   );
 }
 
-export default Input;
+export default Search;
