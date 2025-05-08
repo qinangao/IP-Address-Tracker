@@ -1,24 +1,25 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useLocation } from "../contexts/locationContext";
 
 type PositionProps = [number, number];
 
 function Tracker() {
   const { location, error } = useLocation();
-  const position: PositionProps | null = location
-    ? [location.lat, location.lng]
-    : null;
-
   if (
     !location ||
     typeof location.lat !== "number" ||
     typeof location.lng !== "number"
-  ) {
-    return <p>{error || "Loading..."}</p>;
+  )
+    return <p>Loading</p>;
+
+  if (error) {
+    return <p>{error}</p>;
   }
+  const position: PositionProps = [location.lat, location.lng];
+  console.log(position);
 
   return (
-    position && (
+    location && (
       <div>
         <MapContainer
           center={position}
@@ -33,10 +34,17 @@ function Tracker() {
           <Marker position={position}>
             <Popup>{location.ip}</Popup>
           </Marker>
+          <ChangeCenter position={position} />
         </MapContainer>
       </div>
     )
   );
+}
+
+function ChangeCenter({ position }: { position: [number, number] }) {
+  const map = useMap();
+  map.setView(position);
+  return null;
 }
 
 export default Tracker;
