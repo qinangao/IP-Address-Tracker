@@ -8,12 +8,12 @@ type LocationProps = {
   lng: number;
   timezone: string;
   postcode: string;
-
   isp: string;
 };
 type LocationContextType = {
   location: LocationProps | null;
   error: string | null;
+  searchQuery: (query: string) => Promise<void>;
 };
 
 const locationContext = createContext<LocationContextType | undefined>(
@@ -25,38 +25,46 @@ const KEY = "at_E0Q54tvEaBgqCAPiLg9HnOi7Sj6FI";
 function LocationProvider({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useState<LocationProps | null>(null);
   const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    async function fetchLocation() {
-      try {
-        const res = await fetch(
-          `https://geo.ipify.org/api/v2/country,city?apiKey=${KEY}`
-        );
-        const data = await res.json();
-        console.log(data);
+  // const [isLoading, setIsLoading] = useState(false);
 
-        if (!res.ok) {
-          throw new Error(data.message || "Failed to fetch location data");
-        }
-        setLocation({
-          ip: data.ip,
-          city: data.location.city,
-          country: data.location.country,
-          timezone: data.location.timezone,
-          lat: data.location.lat,
-          lng: data.location.lng,
-          isp: data.isp,
-          postcode: data.location.postalCode || "unknown",
-        });
-      } catch (err) {
-        setError("Failed to fetch location data");
-        console.error(err);
-      }
-    }
+  useEffect(() => {
     fetchLocation();
   }, []);
 
+  async function fetchLocation(query?: string) {
+    try {
+      const url = query
+        ? `https://geo.ipify.org/api/v2/country,city?apiKey=${KEY}&ipAddress=${query}&domain=${query}`
+        : `https://geo.ipify.org/api/v2/country,city?apiKey=${KEY}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!res.ok || data.code === 422) {
+        throw new Error(data.message || "Invalid IP domain");
+      }
+      setLocation({
+        ip: data.ip,
+        city: data.location.city,
+        country: data.location.country,
+        timezone: data.location.timezone,
+        lat: data.location.lat,
+        lng: data.location.lng,
+        isp: data.isp,
+        postcode: data.location.postalCode || " ",
+      });
+      setError(null);
+    } catch (err) {
+      setError("Invalid IP domain");
+      console.error(err);
+    }
+  }
+  console.log(location);
+  async function searchQuery(query: string) {
+    await fetchLocation(query);
+  }
   return (
-    <locationContext.Provider value={{ location, error }}>
+    <locationContext.Provider value={{ location, error, searchQuery }}>
       {children}
     </locationContext.Provider>
   );
