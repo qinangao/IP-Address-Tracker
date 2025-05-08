@@ -1,5 +1,13 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useLocation } from "../contexts/locationContext";
+import { Icon } from "leaflet";
+
+const customIcon = new Icon({
+  iconUrl: "/assets/icon-location.svg",
+  iconSize: [30, 40],
+  iconAnchor: [12, 45],
+  popupAnchor: [1, -34],
+});
 
 type PositionProps = [number, number];
 
@@ -23,7 +31,7 @@ function Tracker() {
       <div>
         <MapContainer
           center={position}
-          zoom={13}
+          zoom={16}
           scrollWheelZoom={true}
           className="h-[610px] z-0"
         >
@@ -31,7 +39,7 @@ function Tracker() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
           />
-          <Marker position={position}>
+          <Marker position={position} icon={customIcon}>
             <Popup>{location.ip}</Popup>
           </Marker>
           <ChangeCenter position={position} />
