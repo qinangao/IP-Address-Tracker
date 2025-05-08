@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { useLocation } from "../contexts/locationContext";
+
 function Search() {
   const [search, setSearch] = useState<string>("");
+
+  const { searchQuery } = useLocation();
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!search) return;
-    alert("test");
+    searchQuery(search);
+    setSearch("");
   }
 
   return (
