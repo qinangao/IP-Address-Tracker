@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useLocation } from "../contexts/locationContext";
 import { Icon } from "leaflet";
+import Spinner from "./Spinner";
 
 const customIcon = new Icon({
   iconUrl: "/assets/icon-location.svg",
@@ -18,7 +19,11 @@ function Tracker() {
     typeof location.lat !== "number" ||
     typeof location.lng !== "number"
   )
-    return <p>Loading</p>;
+    return (
+      <div className="flex justify-center items-center h-[50%]">
+        <Spinner />
+      </div>
+    );
 
   if (error) {
     return <p>{error}</p>;
