@@ -15,7 +15,7 @@ function Error() {
           Try again
         </button>
       </div>
-      <div className="fixed bg-black w-full h-full top-0 left-0 z-10 opacity-60"></div>
+      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center"></div>
     </div>
   );
 }
