@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useLocation } from "../contexts/locationContext";
 import { Icon } from "leaflet";
 import Spinner from "./Spinner";
+import Error from "./Error";
 
 const customIcon = new Icon({
   iconUrl: "/assets/icon-location.svg",
@@ -13,7 +14,8 @@ const customIcon = new Icon({
 type PositionProps = [number, number];
 
 function Tracker() {
-  const { location, error } = useLocation();
+  const { location, showError } = useLocation();
+
   if (
     !location ||
     typeof location.lat !== "number" ||
@@ -25,32 +27,32 @@ function Tracker() {
       </div>
     );
 
-  if (error) {
-    return <p>{error}</p>;
-  }
   const position: PositionProps = [location.lat, location.lng];
-  console.log(position);
+  // console.log(position);
 
   return (
-    location && (
-      <div>
-        <MapContainer
-          center={position}
-          zoom={16}
-          scrollWheelZoom={true}
-          className="h-[610px] z-0"
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-          />
-          <Marker position={position} icon={customIcon}>
-            <Popup>{location.ip}</Popup>
-          </Marker>
-          <ChangeCenter position={position} />
-        </MapContainer>
-      </div>
-    )
+    <div>
+      {showError && (
+        <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center z-50">
+          <Error />
+        </div>
+      )}
+      <MapContainer
+        center={position}
+        zoom={16}
+        scrollWheelZoom={true}
+        className="h-[610px] z-0"
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+        />
+        <Marker position={position} icon={customIcon}>
+          <Popup>{location.ip}</Popup>
+        </Marker>
+        <ChangeCenter position={position} />
+      </MapContainer>
+    </div>
   );
 }
 
