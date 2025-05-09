@@ -14,6 +14,9 @@ type LocationContextType = {
   location: LocationProps | null;
   error: string | null;
   searchQuery: (query: string) => Promise<void>;
+  setShowError: React.Dispatch<React.SetStateAction<boolean>>;
+  showError: boolean;
+  handleCloseError: () => void;
 };
 
 const locationContext = createContext<LocationContextType | undefined>(
@@ -25,6 +28,8 @@ const KEY = "at_E0Q54tvEaBgqCAPiLg9HnOi7Sj6FI";
 function LocationProvider({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useState<LocationProps | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showError, setShowError] = useState(false);
+
   // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -41,7 +46,8 @@ function LocationProvider({ children }: { children: React.ReactNode }) {
       const data = await res.json();
 
       if (!res.ok || data.code === 422) {
-        throw new Error(data.message || "Invalid IP domain");
+        setShowError(true);
+        throw new Error(data.message || "Invalid IP address or domain");
       }
       setLocation({
         ip: data.ip,
@@ -55,16 +61,28 @@ function LocationProvider({ children }: { children: React.ReactNode }) {
       });
       setError(null);
     } catch (err) {
-      setError("Invalid IP domain");
+      setError("Invalid IP address or domain");
       console.error(err);
     }
   }
-  console.log(location);
+
   async function searchQuery(query: string) {
     await fetchLocation(query);
   }
+  function handleCloseError() {
+    setShowError(false);
+  }
   return (
-    <locationContext.Provider value={{ location, error, searchQuery }}>
+    <locationContext.Provider
+      value={{
+        location,
+        error,
+        searchQuery,
+        setShowError,
+        showError,
+        handleCloseError,
+      }}
+    >
       {children}
     </locationContext.Provider>
   );
