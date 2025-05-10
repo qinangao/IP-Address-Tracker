@@ -25,8 +25,6 @@ const locationContext = createContext<LocationContextType | undefined>(
   undefined
 );
 
-// const KEY = "at_E0Q54tvEaBgqCAPiLg9HnOi7Sj6FI";
-
 const API_KEY = "75529e4f36774427ad84008a49fb2115";
 
 function LocationProvider({ children }: { children: React.ReactNode }) {
