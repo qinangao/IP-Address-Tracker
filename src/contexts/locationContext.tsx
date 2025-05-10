@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
+import { isIP, isDomain } from "../helper/CheckIP";
 
 type LocationProps = {
   ip: string;
@@ -32,8 +33,6 @@ function LocationProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [showError, setShowError] = useState(false);
 
-  // const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     fetchLocation();
   }, []);
@@ -46,10 +45,10 @@ function LocationProvider({ children }: { children: React.ReactNode }) {
 
       const res = await fetch(url);
       const data = await res.json();
-      console.log(data);
+
       if (!res.ok || data.code === 422) {
         setShowError(true);
-        throw new Error(data.message || "Invalid IP address or domain");
+        throw new Error(data.message);
       }
       setLocation({
         ip: data.ip,
@@ -65,14 +64,34 @@ function LocationProvider({ children }: { children: React.ReactNode }) {
       });
       setError(null);
     } catch (err) {
-      setError("Invalid IP address or domain");
+      setError((err as Error).message);
       console.error(err);
     }
   }
 
   async function searchQuery(query: string) {
+    const isValidIP = isIP(query);
+    const isValidDomain = isDomain(query);
+
+    if (isValidDomain) {
+      setError(
+        "Domain searches aren't available on the free plan, Please provide an IP address."
+      );
+      setShowError(true);
+      return;
+    }
+
+    if (!isValidIP) {
+      setError("Invalid IP address");
+      setShowError(true);
+      return;
+    }
+
+    setError(null);
+    setShowError(false);
     await fetchLocation(query);
   }
+
   function handleCloseError() {
     setShowError(false);
   }
