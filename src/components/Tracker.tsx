@@ -40,8 +40,8 @@ function Tracker() {
       <MapContainer
         center={position}
         zoom={16}
-        scrollWheelZoom={true}
-        className="h-[610px] z-0"
+        scrollWheelZoom={false}
+        className="h-[610px] z-0 w-full"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
