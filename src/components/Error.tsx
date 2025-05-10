@@ -4,9 +4,9 @@ function Error() {
 
   return (
     <div>
-      <div className="absolute z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 w-[350px] h-[230px] flex flex-col justify-between items-center p-4 bg-amber-50 text-red-800 rounded-2xl ">
+      <div className="absolute w-[80%] p-4 z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 md:w-[50%] xl:w-[33%]  flex flex-col gap-[30px] items-center md:p-10 bg-amber-50 text-red-800 rounded-2xl ">
         <img src="/assets/icons8-error-64.png" alt="error" />
-        <p className="text-xl">{error}</p>
+        <p className="text-xl">Error: {error}</p>
         <button
           type="button"
           onClick={handleCloseError}
