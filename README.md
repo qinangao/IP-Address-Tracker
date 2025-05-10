@@ -1,23 +1,27 @@
 # 🌐 IP Address Tracker
 
-A sleek and responsive IP Address Tracker built with **React**, **Vite**, and **TypeScript**. This application allows users to search any IP address or domain and instantly see its geolocation data displayed on a dynamic map.
+A sleek and responsive IP Address Tracker built with **React**, **Vite**, **TypeScript**, and styled using **Tailwind CSS**. Instantly locate any IP address or domain on a live map.
 
 ---
 
 ## 🚀 Features
 
-- 🔍 Search any IP address or domain
-- 📍 View location on an interactive map
-- 📦 Built with React + Vite + TypeScript for speed and type safety
-- 🗺️ Map powered by [OpenStreetMap](https://www.openstreetmap.org/)
-- 🌐 IP Geolocation via [ipgeolocation.io](https://ipgeolocation.io/)
-- 🎨 Beautiful UI design from [Frontend Mentor](https://www.frontendmentor.io/)
+- 🔍 Real-time search for IP addresses and domains
+- 📍 Interactive map with precise geolocation (React Leaflet + OpenStreetMap)
+- ⚡ Fast performance powered by Vite and TypeScript
+- 🎨 Fully responsive, clean UI styled with **Tailwind CSS**
+- 💡 UI design challenge from Frontend Mentor
+
+---
 
 ## 🛠️ Tech Stack
 
-- **React**
+- **React** (with Hooks)
 - **TypeScript**
 - **Vite**
 - **Tailwind CSS**
-- **React-Leaflet** (for OpenStreetMap integration)
-- **ipgeolocation.io** API
+- **React Leaflet**
+- **OpenStreetMap**
+- **ipgeolocation.io API**
+
+---
